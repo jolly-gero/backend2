@@ -1,22 +1,27 @@
 const mongoose = require('mongoose')
 
 const deviceSchema = mongoose.Schema({
-  user_ID: {
+  username: {
     type: String,
     required: true
   },
-  device_ID: {
+  device_name: {
     type: String,
     required: true
   },
-  device_status: {
+  client_id: {
     type: String,
     required: true
   },
-  device_key: {
+  device_id: {
+    type: String,
+    required: true
+  },
+  device_password: {
     type: String,
     required: true
   }
+
 }, { timestamps: true, versionKey: false });
 
 module.exports = mongoose.model("device", deviceSchema);

@@ -1,13 +1,16 @@
+//1
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const bcrypt = require("bcryptjs");
+const Keygen = require("../Authkey")
 
 // schema data user
 const login = require("../model/userProfile");
 
 // schema device user
-// const login = require("../model/deviceID");
+// const _device = require("../model/deviceID");
 
 // schema data
 const _data = require("../model/data");
@@ -30,47 +33,33 @@ router.get("/2", async (req, res) => {
 });
 
 // //!----------------------------- crate device----------------------------------------------//
-// router.post("/device", async (req, res) => {
-//   console.log(req.body);
-//   console.log(req.body.user_ID);
+router.post("/device", async (req, res) => {
+  // console.log(req.body);
+  // console.log(req.body.username);
 
-//   // Checking if the deviceID is already in the database
-//   const deviceExist = await login.findOne( {device_ID : req.body.device_ID})
-//   if(deviceExist) return res.status(400).send('deviceExist already exists')
+  // // Checking if the deviceName is already in the database
+  // const deviceExist = await login.findOne( {device_name : req.body.device_name})
+  // if(deviceExist) return res.status(400).send('devicename already exists')
 
-//   // create a new user
-//   const _device = new login({
-//     username: req.body.username,
-//     password: hashPassword,
-//     profile: {
-//       firstname: req.body.firstname,
-//       lastname: req.body.lastname,
-//       email: req.body.email,
-//       phone: req.body.phone,
-//       mobilephone: req.body.mobilephone,
-//       position: req.body.position,
-//     },
-//   });
+  console.log(Keygen.randomkeygen());
+  res.json(Keygen.randomkeygen());
 
-//   try {
-//     const saveUser = await jolly.save();
-//     res.json(saveUser);
-//   } catch (err) {
-//     res.json({ message: err });
-//   }
-// });
 
-// console.log(Date.now.toUTCString());
-const moment = require("moment-timezone");
-const dateThailand = moment().tz("Asia/Bangkok").format();
-// const dateThailand = moment.tz(Date.now()+7, "Asia/Bangkok");
-// const dateThailand = moment().utcOffset(7);
+  // // create a new device
+  // const createDevice = new _device({
+  //   username: req.body.username,
+  //   device_name: req.body.device_name,
+  //   client_id: req.body.client_id,
+  //   device_id: req.body.device_id,
+  //   device_password: req.body.device_password
+  // });
 
-//!----------------------------- time Zone----------------------------------------------//
-router.post("/time", async (req, res) => {
-  console.log(dateThailand);
-  // res.send(typeof(dateThailand));
-  res.json({ time: dateThailand });
+  // try {
+  //   const saveDevice = await createDevice.save();
+  //   res.json(saveDevice);
+  // } catch (err) {
+  //   res.json({ message: err.toString() });
+  // }
 });
 
 //!----------------------------- crate data----------------------------------------------//
@@ -186,20 +175,23 @@ router.patch("/update", async (req, res) => {
       { username: `${req.body.username}` },
       { $set: { password: `${hashPassword}` } }
     );
-    if (updateUser.nModified === 1 && updateUser.n === 1) {
-      console.log(`this User password >>>> updated`);
-      res.send("updated");
-    } else if (updateUser.nModified === 0 && updateUser.n === 1) {
-      console.log(`this User password >>>> the same password`);
-      res.send("same");
-    } else {
-      console.log(`can't update`);
-      res.json({ message: "can't find the User!!" });
-    }
+
+
+    // if (updateUser.nModified === 1 && updateUser.n === 1) {
+    //   console.log(`this User password >>>> updated`);
+    //   res.send("updated");
+    // } else if (updateUser.nModified === 0 && updateUser.n === 1) {
+    //   console.log(`this User password >>>> the same password`);
+    //   res.send("same");
+    // } else {
+    //   console.log(`can't update`);
+    //   res.json({ message: "can't find the User!!" });
+    // }
   } catch (err) {
     console.log(err.toString());
     res.json({ message: "can't find the User!!" });
   }
 });
+
 
 module.exports = router;
