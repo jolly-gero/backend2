@@ -9,3 +9,10 @@ function randomkeygen() {
 };
 // console.log(randomkeygen());
 module.exports.randomkeygen = randomkeygen;
+
+//467cdfd4-77b5-4846-ab58-b8619fe9315b
+//Username
+//Devicename
+//Scope ??
+
+//Plugin web hook --Vernmq (REST Api)

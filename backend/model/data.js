@@ -5,7 +5,6 @@ const dataSchema = mongoose.Schema({
     type: String,
     required: true
   }
-}, { timestamps: true, versionKey: false });
-
+},{ timestamps: true, versionKey: false });
 
 module.exports = mongoose.model("_data", dataSchema);
