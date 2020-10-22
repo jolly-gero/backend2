@@ -25,7 +25,8 @@ mongoose.connect(
   //docker exec -it c4a0164bb900 mongo -u 'root' -p 'vKwrDP8fMnnon0scszzEqFaPxocBC1y/b8rOUVzJ8k8=' --authenticationDatabase 'admin'
   // process.env.DB_Connect,
   "DB_Connect = mongodb://root:vKwrDP8fMnnon0scszzEqFaPxocBC1y%2Fb8rOUVzJ8k8%3D@203.150.221.207:27017/sdwanDB?authSource=admin",
-  { useNewUrlParser: true, useUnifiedTopology: true },() => console.log("connected")
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => console.log("connected")
 );
 
 // Check DB error

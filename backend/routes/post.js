@@ -18,7 +18,7 @@ const router = express.Router();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-router.get("/1", async (req, res) => {
+router.post("/1", async (req, res) => {
   console.log(req.body);
   res.json({
     status: `value is ${req.body.number}`,
@@ -62,17 +62,17 @@ router.get("/2", async (req, res) => {
 
 
 // console.log(Date.now.toUTCString());
-const moment = require('moment-timezone');
-const dateThailand = moment().tz("Asia/Bangkok").format();
+// const moment = require('moment-timezone');
+// const dateThailand = moment().tz("Asia/Bangkok").format();
 // const dateThailand = moment.tz(Date.now()+7, "Asia/Bangkok");
 // const dateThailand = moment().utcOffset(7);
 
-//!----------------------------- time Zone----------------------------------------------//
-router.post("/time", async (req, res) => {
-  console.log(dateThailand);
-  // res.send(typeof(dateThailand));
-  res.json({"time":dateThailand});
-});
+ //!----------------------------- time Zone----------------------------------------------//
+// router.post("/time", async (req, res) => {
+//   console.log(dateThailand);
+//   // res.send(typeof(dateThailand));
+//   res.json({"time":dateThailand});
+// });
 
 //!----------------------------- crate data----------------------------------------------//
 router.post("/data", async (req, res) => {
