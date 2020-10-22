@@ -34,6 +34,11 @@ mongoose.connection.on("error", (err) => {
   console.error("MongoDB error", err);
 });
 
+// MQTT Connect
+var mqttHandler = require('./mqttHandler');
+var mqttClient = new mqttHandler();
+//mqttClient.connect();
+
 // //middleware
 // app.use('/test', (req,res,next) => {
 //   console.log('Middle');

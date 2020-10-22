@@ -11,6 +11,8 @@ const login = require("../model/table");
 
 // schema data
 const _data = require("../model/data");
+// Key gen
+const Keygen = require("../Auten_key")
 
 const router = express.Router();
 
@@ -18,15 +20,19 @@ const router = express.Router();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-router.post("/1", async (req, res) => {
-  console.log(req.body);
-  res.json({
-    status: `value is ${req.body.number}`,
-  });
-});
+
+//
+//!---------------------------- Test  Get ------------------------------------------------------
+// router.get("/1", async (req, res) => {
+//   console.log(req.body);
+//   res.json({
+//     status: `value is ${req.body.number}`,
+//   });
+// });
 
 router.get("/2", async (req, res) => {
-  res.send("We are 2");
+  console.log(Keygen.randomkeygen());
+  res.json(Keygen.randomkeygen());
 });
 
 // //!----------------------------- crate device----------------------------------------------//
