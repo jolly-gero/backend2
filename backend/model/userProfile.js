@@ -1,9 +1,5 @@
 const mongoose = require('mongoose')
 
-//import timeThai
-const moment = require('moment-timezone');
-const dateThailand = moment.tz(Date.now(), "Asia/Bangkok");
-
 const userSchema = mongoose.Schema({
   username: {
     type: String,
@@ -38,11 +34,7 @@ const userSchema = mongoose.Schema({
       type: String,
       required: true,
     }
-  },
-  date: {
-    type: Date,
-    default: dateThailand
-  },
-});
+  }
+}, { timestamps: true, versionKey: false });
 
 module.exports = mongoose.model("login", userSchema);

@@ -4,7 +4,7 @@ const app = express();
 const bcrypt = require("bcryptjs");
 
 // schema data user
-const login = require("../model/table");
+const login = require("../model/userProfile");
 
 // schema device user
 // const login = require("../model/deviceID");
@@ -60,9 +60,8 @@ router.get("/2", async (req, res) => {
 //   }
 // });
 
-
 // console.log(Date.now.toUTCString());
-const moment = require('moment-timezone');
+const moment = require("moment-timezone");
 const dateThailand = moment().tz("Asia/Bangkok").format();
 // const dateThailand = moment.tz(Date.now()+7, "Asia/Bangkok");
 // const dateThailand = moment().utcOffset(7);
@@ -71,7 +70,7 @@ const dateThailand = moment().tz("Asia/Bangkok").format();
 router.post("/time", async (req, res) => {
   console.log(dateThailand);
   // res.send(typeof(dateThailand));
-  res.json({"time":dateThailand});
+  res.json({ time: dateThailand });
 });
 
 //!----------------------------- crate data----------------------------------------------//
@@ -97,12 +96,12 @@ router.post("/create", async (req, res) => {
   console.log(req.body.username);
 
   // Checking if the userEmail is already in the database
-  const emailExist = await login.findOne( {"profile.email" : req.body.email})
-  if(emailExist) return res.status(400).send('Email already exists')
+  const emailExist = await login.findOne({ "profile.email": req.body.email });
+  if (emailExist) return res.status(400).send("Email already exists");
 
   // Checking if the username is already in the database
-  const userExist = await login.findOne( {"username" : req.body.username})
-  if(userExist) return res.status(400).send('Username already exists')
+  const userExist = await login.findOne({ username: req.body.username });
+  if (userExist) return res.status(400).send("Username already exists");
 
   //Hash password
   const salt = await bcrypt.genSalt(10);
@@ -131,7 +130,7 @@ router.post("/create", async (req, res) => {
 });
 
 //!----------------------------- find All user----------------------------------------------//
-router.post("/findAll", async (req, res) => {
+router.get("/findAll", async (req, res) => {
   console.log("Find all Users");
   const findUser = await login.find({});
   res.json(findUser);
@@ -177,11 +176,15 @@ router.post("/login", async (req, res) => {
 
 //! ----------------------------- Update user ----------------------------------------------//
 router.patch("/update", async (req, res) => {
+  //Hash password
+  const salt = await bcrypt.genSalt(10);
+  const hashPassword = await bcrypt.hash(req.body.newPassword, salt);
+
   try {
     console.log(req.body);
     const updateUser = await login.updateOne(
       { username: `${req.body.username}` },
-      { $set: { password: `${req.body.newPassword}` } }
+      { $set: { password: `${hashPassword}` } }
     );
     if (updateUser.nModified === 1 && updateUser.n === 1) {
       console.log(`this User password >>>> updated`);
