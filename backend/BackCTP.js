@@ -44,7 +44,7 @@ var mqttClient = new mqttHandler();
 //   console.log('Middle');
 //   next()
 // })
-
+mqttClient.connect();
 app.use("/user", postsRoute);
 
 // Route

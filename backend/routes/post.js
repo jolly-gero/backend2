@@ -67,11 +67,6 @@ router.get("/2", async (req, res) => {
 // });
 
 
-// console.log(Date.now.toUTCString());
-// const moment = require('moment-timezone');
-// const dateThailand = moment().tz("Asia/Bangkok").format();
-// const dateThailand = moment.tz(Date.now()+7, "Asia/Bangkok");
-// const dateThailand = moment().utcOffset(7);
 
  //!----------------------------- time Zone----------------------------------------------//
 // router.post("/time", async (req, res) => {

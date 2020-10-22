@@ -43,6 +43,6 @@ const userSchema = mongoose.Schema({
     type: Date,
     default: dateThailand
   },
-});
+},{ timestamps: true, versionKey: false });
 
 module.exports = mongoose.model("login", userSchema);
