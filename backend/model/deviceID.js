@@ -21,12 +21,6 @@ const deviceSchema = mongoose.Schema({
     type: String,
     required: true
   }
-<<<<<<< HEAD
-
-}, { timestamps: true, versionKey: false });
-=======
 },{ timestamps: true, versionKey: false });
-
->>>>>>> a61cdf56fdd6b61b081baed1d05bda72c5130246
 
 module.exports = mongoose.model("device", deviceSchema);

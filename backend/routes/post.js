@@ -7,7 +7,7 @@ const bcrypt = require("bcryptjs");
 const login = require("../model/userProfile");
 
 // schema device user
-// const _device = require("../model/deviceID");
+const _device = require("../model/deviceID");
 
 // schema data
 const _data = require("../model/data");
@@ -21,48 +21,38 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 
-//
-//!---------------------------- Test  Get ------------------------------------------------------
-// router.get("/1", async (req, res) => {
-//   console.log(req.body);
-//   res.json({
-//     status: `value is ${req.body.number}`,
-//   });
-// });
 
+//!---------------------------- Test  Get ------------------------------------------------------
 router.get("/2", async (req, res) => {
   console.log(Keygen.randomkeygen());
+  console.log(Keygen.randomkeygen().client_id);
   res.json(Keygen.randomkeygen());
 });
 
 // //!----------------------------- crate device----------------------------------------------//
 router.post("/device", async (req, res) => {
-  // console.log(req.body);
-  // console.log(req.body.username);
+  console.log(req.body);
+  console.log(req.body.username);
 
-  // // Checking if the deviceName is already in the database
-  // const deviceExist = await login.findOne( {device_name : req.body.device_name})
-  // if(deviceExist) return res.status(400).send('devicename already exists')
+  // Checking if the deviceName is already in the database
+  const deviceExist = await _device.findOne( {device_name : req.body.device_name})
+  if(deviceExist) return res.status(400).send('device name already exists')
 
-  console.log(Keygen.randomkeygen());
-  res.json(Keygen.randomkeygen());
+  // create a new device
+  const createDevice = new _device({
+    username: req.body.username,
+    device_name: req.body.device_name,
+    client_id: Keygen.randomkeygen().client_id,
+    device_id: Keygen.randomkeygen().device_id,
+    device_password: Keygen.randomkeygen().device_password
+  });
 
-
-  // // create a new device
-  // const createDevice = new _device({
-  //   username: req.body.username,
-  //   device_name: req.body.device_name,
-  //   client_id: req.body.client_id,
-  //   device_id: req.body.device_id,
-  //   device_password: req.body.device_password
-  // });
-
-  // try {
-  //   const saveDevice = await createDevice.save();
-  //   res.json(saveDevice);
-  // } catch (err) {
-  //   res.json({ message: err.toString() });
-  // }
+  try {
+    const saveDevice = await createDevice.save();
+    res.json(saveDevice);
+  } catch (err) {
+    res.json({ message: err.toString() });
+  }
 });
 
 //!----------------------------- crate data----------------------------------------------//
@@ -119,6 +109,30 @@ router.post("/create", async (req, res) => {
   } catch (err) {
     res.json({ message: err });
   }
+});
+
+
+//!----------------------------- show All users and thier device----------------------------------------------//
+router.post("/showAll", async (req, res) => {
+  console.log("Find all Users");
+  const findUser = await login.find({})
+  .select(['username','profile.firstname','profile.lastname','profile.email','profile.position','unlock']);
+
+  const findDevice = await _device.find({})
+  .select(['username','device_name']);
+
+  // console.log(typeof(findUser[0]));
+  // console.log(typeof(findDevice[0]));
+  // console.log({...findUser[1], ...findDevice[1]});
+  console.log(JSON.parse((JSON.stringify(findUser) + JSON.stringify(findDevice))));
+  res.json(findUser);
+
+  // try {
+  //   const saveData = await boom.save();
+  //   res.json(saveData);
+  // } catch (err) {
+  //   res.json({ message: err.toString() });
+  // }
 });
 
 //!----------------------------- find All user----------------------------------------------//

@@ -34,7 +34,10 @@ const userSchema = mongoose.Schema({
       type: String,
       required: true,
     }
-
+  },
+  unlock: {
+    type: String,
+    default: "unlock"
   }  
 }, { timestamps: true, versionKey: false });
 
