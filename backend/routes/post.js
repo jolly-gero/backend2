@@ -12,15 +12,13 @@ const _device = require("../model/deviceID");
 // schema data
 const _data = require("../model/data");
 // Key gen
-const Keygen = require("../Auten_key")
+const Keygen = require("../Auten_key");
 
 const router = express.Router();
 
 //use bodyParser
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
-
-
 
 //!---------------------------- Test  Get ------------------------------------------------------
 router.get("/2", async (req, res) => {
@@ -35,8 +33,10 @@ router.post("/device", async (req, res) => {
   console.log(req.body.username);
 
   // Checking if the deviceName is already in the database
-  const deviceExist = await _device.findOne( {device_name : req.body.device_name})
-  if(deviceExist) return res.status(400).send('device name already exists')
+  const deviceExist = await _device.findOne({
+    device_name: req.body.device_name,
+  });
+  if (deviceExist) return res.status(400).send("device name already exists");
 
   // create a new device
   const createDevice = new _device({
@@ -44,7 +44,7 @@ router.post("/device", async (req, res) => {
     device_name: req.body.device_name,
     client_id: Keygen.randomkeygen().client_id,
     device_id: Keygen.randomkeygen().device_id,
-    device_password: Keygen.randomkeygen().device_password
+    device_password: Keygen.randomkeygen().device_password,
   });
 
   try {
@@ -111,28 +111,25 @@ router.post("/create", async (req, res) => {
   }
 });
 
-
-//!----------------------------- show All users and thier device----------------------------------------------//
+//!----------------------------- show All users ----------------------------------------------//
 router.post("/showAll", async (req, res) => {
   console.log("Find all Users");
-  const findUser = await login.find({})
-  .select(['username','profile.firstname','profile.lastname','profile.email','profile.position','unlock']);
 
-  const findDevice = await _device.find({})
-  .select(['username','device_name']);
-
-  // console.log(typeof(findUser[0]));
-  // console.log(typeof(findDevice[0]));
-  // console.log({...findUser[1], ...findDevice[1]});
-  console.log(JSON.parse((JSON.stringify(findUser) + JSON.stringify(findDevice))));
-  res.json(findUser);
-
-  // try {
-  //   const saveData = await boom.save();
-  //   res.json(saveData);
-  // } catch (err) {
-  //   res.json({ message: err.toString() });
-  // }
+  try {
+    const findUser = await login
+      .find({})
+      .select([
+        "username",
+        "profile.firstname",
+        "profile.lastname",
+        "profile.email",
+        "profile.position",
+        "unlocked",
+      ]);
+    res.json(findUser);
+  } catch (err) {
+    res.json({ message: err.toString() });
+  }
 });
 
 //!----------------------------- find All user----------------------------------------------//
@@ -193,7 +190,6 @@ router.patch("/update", async (req, res) => {
       { $set: { password: `${hashPassword}` } }
     );
 
-
     // if (updateUser.nModified === 1 && updateUser.n === 1) {
     //   console.log(`this User password >>>> updated`);
     //   res.send("updated");
@@ -209,6 +205,5 @@ router.patch("/update", async (req, res) => {
     res.json({ message: "can't find the User!!" });
   }
 });
-
 
 module.exports = router;
