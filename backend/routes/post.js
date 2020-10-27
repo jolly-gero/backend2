@@ -111,6 +111,39 @@ router.post("/create", async (req, res) => {
   }
 });
 
+//!----------------------------- Unlocked user ----------------------------------------------//
+router.post("/unlocked", async (req, res) => {
+  console.log(req.body);
+  console.log(req.body.username);
+  try{
+    const unlocked = await login.findOneAndUpdate(
+      { username: `${req.body.username}` },
+      { unlocked: `${req.body.unlocked}` }, 
+      {new: true}
+      // {returnOriginal: false}
+    );
+    console.log(unlocked.unlocked);
+    res.json(unlocked)
+  } catch (err) {
+
+    res.json({ message: err.toString() });
+  }
+});
+
+//!----------------------------- deleted user ----------------------------------------------//
+router.post("/deleted", async (req, res) => {
+  console.log(req.body);
+  console.log(req.body.username);
+  try{
+    const deleted = await login.findOneAndDelete({ username: `${req.body.username}` });
+    if (!deleted) return res.status(400).send(`username does not exist`);
+    console.log(deleted);
+    res.send(deleted)
+  } catch (err) {
+    res.json({ message: err.toString() });
+  }
+});
+
 //!----------------------------- show All users ----------------------------------------------//
 router.post("/showAll", async (req, res) => {
   console.log("Find all Users");
@@ -130,13 +163,6 @@ router.post("/showAll", async (req, res) => {
   } catch (err) {
     res.json({ message: err.toString() });
   }
-});
-
-//!----------------------------- find All user----------------------------------------------//
-router.get("/findAll", async (req, res) => {
-  console.log("Find all Users");
-  const findUser = await login.find({});
-  res.json(findUser);
 });
 
 //!----------------------------- find specific user [Login]----------------------------------------------//
@@ -179,17 +205,32 @@ router.post("/login", async (req, res) => {
 
 //! ----------------------------- Update user ----------------------------------------------//
 router.patch("/update", async (req, res) => {
-  //Hash password
-  const salt = await bcrypt.genSalt(10);
-  const hashPassword = await bcrypt.hash(req.body.newPassword, salt);
+  
+  try{
+    // Checking if the username is already in the database
+    const userExist = await login.findOne({ username: req.body.username });
+    if (!userExist) return res.status(400).send("Username does not exists");
+ 
+    // Password is the same ?
+    const samePass = await bcrypt.compare(req.body.newPassword, userExist.password);
+    if (samePass){return res.status(400).send("same");} 
+    else{
 
-  try {
-    console.log(req.body);
-    const updateUser = await login.updateOne(
+      //Hash password
+      const salt = await bcrypt.genSalt(10);
+      const hashPassword = await bcrypt.hash(req.body.newPassword, salt);
+
+      const updateUser = await login.updateOne(
       { username: `${req.body.username}` },
-      { $set: { password: `${hashPassword}` } }
-    );
-
+      { $set: { password: `${hashPassword}` } });
+      console.log(updateUser);
+      res.send("updated");
+    }
+  }catch (err) {
+    console.log(err.toString());
+    res.json({ message: err.toString() });
+  }
+  
     // if (updateUser.nModified === 1 && updateUser.n === 1) {
     //   console.log(`this User password >>>> updated`);
     //   res.send("updated");
@@ -200,10 +241,7 @@ router.patch("/update", async (req, res) => {
     //   console.log(`can't update`);
     //   res.json({ message: "can't find the User!!" });
     // }
-  } catch (err) {
-    console.log(err.toString());
-    res.json({ message: "can't find the User!!" });
-  }
+  
 });
 
 module.exports = router;
