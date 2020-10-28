@@ -21,7 +21,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 //!---------------------------- Test  Get ------------------------------------------------------
-router.get("/2", async (req, res) => {
+router.get("/waew", async (req, res) => {
   console.log(Keygen.randomkeygen());
   console.log(Keygen.randomkeygen().client_id);
   res.json(Keygen.randomkeygen());
