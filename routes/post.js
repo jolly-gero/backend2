@@ -72,7 +72,7 @@ router.post("/data", async (req, res) => {
   }
 });
 
-//!----------------------------- crate user----------------------------------------------//
+//!----------------------------- crate user--------------------------------------------------//
 router.post("/create", async (req, res) => {
   console.log(req.body);
   console.log(req.body.username);
