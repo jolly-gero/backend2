@@ -173,7 +173,7 @@ router.post("/findOne", async (req, res) => {
       username: `${req.body.username}`,
       password: `${req.body.password}`,
     });
-    console.log(`id : ${findUser._id} >>>> passed`);
+    console.log(`id : ${findUser._id} >>>>> passed`);
     res.json(findUser);
   } catch (err) {
     // res.json({ message: "Username or password is wrong" });
