@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 // Import Routes
 const postsRoute = require("./routes/post");
 
-// Cors
+// Cors fucntion
 const cors = require("cors");
 app.options("*", cors());
 app.use(cors());

@@ -55,7 +55,7 @@ router.post("/device", async (req, res) => {
   }
 });
 
-//!----------------------------- crate data----------------------------------------------//
+//!----------------------------- crate data-----------------------------------------------//
 router.post("/data", async (req, res) => {
   console.log(req.body);
   console.log(req.body.dataU);
