@@ -8,7 +8,7 @@ const deviceSchema = mongoose.Schema({
   device_name: {
     type: String,
     required: true
-  },
+  },  
   client_id: {
     type: String,
     required: true

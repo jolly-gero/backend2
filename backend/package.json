@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon BackCTP.js"
+    "start": "node BackCTP.js",
+    "dev": "nodemon BackCTP.js"
   },
   "keywords": [],
   "author": "",
@@ -19,8 +20,10 @@
     "moment-timezone": "^0.5.31",
     "mongoose": "^5.10.9",
     "mqtt": "^4.2.1",
-    "nodemon": "^2.0.4",
     "password-generator": "^2.3.2",
     "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }

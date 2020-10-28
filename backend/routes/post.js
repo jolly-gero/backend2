@@ -21,7 +21,7 @@ app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 //!---------------------------- Test  Get ------------------------------------------------------
-router.get("/2", async (req, res) => {
+router.get("/waew", async (req, res) => {
   console.log(Keygen.randomkeygen());
   console.log(Keygen.randomkeygen().client_id);
   res.json(Keygen.randomkeygen());
@@ -72,18 +72,18 @@ router.post("/data", async (req, res) => {
   }
 });
 
-//!----------------------------- crate user----------------------------------------------//
+//!----------------------------- crate user--------------------------------------------------//
 router.post("/create", async (req, res) => {
   console.log(req.body);
   console.log(req.body.username);
 
   // Checking if the userEmail is already in the database
   const emailExist = await login.findOne({ "profile.email": req.body.email });
-  if (emailExist) return res.status(400).send("Email already exists");
+  if (emailExist) return res.send("Email already exists");
 
   // Checking if the username is already in the database
   const userExist = await login.findOne({ username: req.body.username });
-  if (userExist) return res.status(400).send("Username already exists");
+  if (userExist) return res.send("Username already exists");
 
   //Hash password
   const salt = await bcrypt.genSalt(10);
@@ -136,7 +136,7 @@ router.post("/deleted", async (req, res) => {
   console.log(req.body.username);
   try{
     const deleted = await login.findOneAndDelete({ username: `${req.body.username}` });
-    if (!deleted) return res.status(400).send(`username does not exist`);
+    if (!deleted) return res.send(`username does not exist`);
     console.log(deleted);
     res.send(deleted)
   } catch (err) {
@@ -173,7 +173,7 @@ router.post("/findOne", async (req, res) => {
       username: `${req.body.username}`,
       password: `${req.body.password}`,
     });
-    console.log(`id : ${findUser._id} >>>> passed`);
+    console.log(`id : ${findUser._id} >>>>> passed`);
     res.json(findUser);
   } catch (err) {
     // res.json({ message: "Username or password is wrong" });
@@ -189,11 +189,11 @@ router.post("/login", async (req, res) => {
 
     // Checking if the email exists
     const user = await login.findOne({ username: `${req.body.username}` });
-    if (!user) return res.status(400).send("Username does not exists");
+    if (!user) return res.send("Username does not exists");
 
     // Password is correct ?
     const validPass = await bcrypt.compare(req.body.password, user.password);
-    if (!validPass) return res.status(400).send("Invalid password !!");
+    if (!validPass) return res.send("Invalid password !!");
 
     res.json(user);
   } catch (err) {
@@ -209,11 +209,11 @@ router.patch("/update", async (req, res) => {
   try{
     // Checking if the username is already in the database
     const userExist = await login.findOne({ username: req.body.username });
-    if (!userExist) return res.status(400).send("Username does not exists");
+    if (!userExist) return res.send("Username does not exists");
  
     // Password is the same ?
     const samePass = await bcrypt.compare(req.body.newPassword, userExist.password);
-    if (samePass){return res.status(400).send("same");} 
+    if (samePass){return res.send("same");} 
     else{
 
       //Hash password
