@@ -20,7 +20,7 @@ const router = express.Router();
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-//!---------------------------- Test  Get ------------------------------------------------------
+//!---------------------------- Test  Get route ------------------------------------------------------
 router.get("/waew", async (req, res) => {
   console.log(Keygen.randomkeygen());
   console.log(Keygen.randomkeygen().client_id);
